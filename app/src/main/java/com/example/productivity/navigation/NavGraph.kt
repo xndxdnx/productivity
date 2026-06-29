@@ -19,7 +19,10 @@ fun NavGraph (
         navController = navHostController,
         startDestination = Routes.SHOPPING_LIST
     ) {
-        composable(route = Routes.SHOPPING_LIST) {ShoppingListScreen()}
+        composable(route = Routes.SHOPPING_LIST) {
+            ShoppingListScreen(
+            ) {}
+        }
         composable(route = Routes.ABOUT) {AboutScreen()}
         composable(route = Routes.NOTE_LIST) {NoteListScreen()}
         composable(route = Routes.SETTINGS) {SettingsScreen()}

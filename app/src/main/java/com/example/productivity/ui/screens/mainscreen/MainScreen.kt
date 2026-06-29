@@ -42,7 +42,7 @@ fun MainScreen (){
             onClick = {},
             modifier = Modifier
                 .align(alignment = Alignment.BottomCenter)
-                .offset(y = (-40).dp)
+                .offset(y = (-60).dp)
                 .size(56.dp),
         ) {
             Icon(
@@ -53,10 +53,6 @@ fun MainScreen (){
         }
         
         NavGraph(navController)
-        
-        
     }
-    
-    
-    
+
 }

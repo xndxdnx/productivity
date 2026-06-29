@@ -38,7 +38,7 @@ fun BottomNav (
     NavigationBar(
         modifier = Modifier
             .background(color = Color.White)
-            .height(70.dp),
+            .height(90.dp),
     ) {
         bottomItems.forEach { bottomNavItem -> 
             val navBackStackEntry by navHostController.currentBackStackEntryAsState()
