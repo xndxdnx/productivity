@@ -36,7 +36,7 @@ class ShoppingListViewModel @Inject constructor(
         private set
 
     fun onEvent(event: ShoppingListEvent) {
-        when (event) {
+        when (event) { 
             is ShoppingListEvent.OnItemSave -> {
                 if (editableText.value.isBlank()) return
                 viewModelScope.launch {
@@ -60,7 +60,7 @@ class ShoppingListViewModel @Inject constructor(
                 listItem = event.item
                 openDialog.value = true
                 editableText.value = listItem?.name ?: ""
-                dialogTitle.value = "name: "
+                dialogTitle.value = "List name: "
                 showEditableText.value = true
             }
 
