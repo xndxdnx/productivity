@@ -1,4 +1,4 @@
-package com.example.productivity.ui.screens.shoppinglistscreen
+package com.example.productivity.ui.screens.mainscreen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import com.example.productivity.data.entities.ShoppingListItem
 import com.example.productivity.data.repository.ShoppingListRepository
 import com.example.productivity.dialog.DialogController
 import com.example.productivity.dialog.DialogEvent
+import com.example.productivity.utils.Routes
 import com.example.productivity.utils.UiEvent
 import com.example.productivity.utils.getCurrentTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,13 +17,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ShoppingListViewModel @Inject constructor(
-    private val repository: ShoppingListRepository
-) : ViewModel(), DialogController {
-    val list = repository.getAllItems()
+class MainScreenViewModel @Inject constructor(
+    val shoppingListRepository: ShoppingListRepository
+): ViewModel(), DialogController{
+
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-    private var listItem: ShoppingListItem? = null
 
     override var dialogTitle = mutableStateOf<String>("List Name")
         private set
@@ -33,73 +33,72 @@ class ShoppingListViewModel @Inject constructor(
     override var openDialog = mutableStateOf<Boolean>(false)
         private set
 
-    fun onEvent(event: ShoppingListEvent) {
-        when (event) { 
-            is ShoppingListEvent.OnItemSave -> {
+    var showFloatingButton = mutableStateOf(true)
+        private set
+
+    fun updateFloatingButtonVisibility (route: String) {
+        showFloatingButton.value = !(route == Routes.ABOUT || route == Routes.SETTINGS)
+    }
+
+
+    fun onEvent(event: MainScreenEvent){
+        when(event){
+            is MainScreenEvent.OnItemSave -> {
                 if (editableText.value.isBlank()) return
                 viewModelScope.launch {
-                    repository.insertItem(
+                    shoppingListRepository.insertItem(
                         ShoppingListItem(
-                            listItem?.id,
+                            id = null,
                             name = editableText.value,
-                            time = listItem?.time?: getCurrentTime(),
-                            allItemsCount = listItem?.allItemsCount ?: 0,
-                            allSelectedItemsCount = listItem?.allSelectedItemsCount ?: 0
+                            time = getCurrentTime(),
+                            allItemsCount = 0,
+                            allSelectedItemsCount = 0
                         )
                     )
                 }
-            }
 
-            is ShoppingListEvent.OnItemClick -> {
-                sendUiEvent(event = UiEvent.Navigate(event.route))
             }
-
-            is ShoppingListEvent.OnShowEditDialog -> {
-                listItem = event.item
-                openDialog.value = true
-                editableText.value = listItem?.name ?: ""
-                dialogTitle.value = "List name: "
-                showEditableText.value = true
+            is MainScreenEvent.OnNewItemClick -> {
+                if (event.route == Routes.SHOPPING_LIST) {
+                    openDialog.value = true
+                }else {
+                    sendUiEvent(UiEvent.NavigateMain(route = Routes.NEW_NOTE + "/-"))
+                }
             }
-
-            is ShoppingListEvent.OnShowDeleteDialog -> {
-                listItem = event.item
-                openDialog.value = true
-                showEditableText.value = false
-                dialogTitle.value = "Delete List?"
+            is MainScreenEvent.Navigate -> {
+                sendUiEvent(UiEvent.Navigate(route = event.route))
+            }
+            is MainScreenEvent.NavigateMain -> {
+                sendUiEvent(UiEvent.NavigateMain(route = event.route))
             }
         }
     }
 
     override fun onDialogEvent(event: DialogEvent) {
-        when (event) {
+        when(event){
             is DialogEvent.OnCancel -> {
                 openDialog.value = false
+                editableText.value = ""
             }
             is DialogEvent.OnConfirm -> {
                 if (showEditableText.value) {
-                    onEvent(event = ShoppingListEvent.OnItemSave)
-                } else {
-                    viewModelScope.launch {
-                        listItem?.let { item ->
-                            repository.deleteItem(item)
-                        }
-                    }
+                    onEvent(event = MainScreenEvent.OnItemSave)
+                    openDialog.value = false
+                    editableText.value = ""
                 }
-                openDialog.value = false
             }
             is DialogEvent.OnTextChange -> {
                 editableText.value = event.text
+
             }
         }
     }
 
-    private fun sendUiEvent(
-        event: UiEvent.Navigate
-    ) {
+    private fun sendUiEvent(event: UiEvent){
         viewModelScope.launch {
             _uiEvent.send(event)
         }
     }
+
 
 }

@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun NoteListScreen(){
+fun NoteListScreen(
+    onNavigate:(String) -> Unit
+){
     Text("Note List Screen",
         modifier = Modifier
             .fillMaxSize()

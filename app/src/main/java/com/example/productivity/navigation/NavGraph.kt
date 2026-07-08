@@ -12,7 +12,8 @@ import com.example.productivity.utils.Routes
 
 @Composable
 fun NavGraph (
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    onNavigate:(String) -> Unit
 ) {
     
     NavHost(
@@ -21,10 +22,14 @@ fun NavGraph (
     ) {
         composable(route = Routes.SHOPPING_LIST) {
             ShoppingListScreen(
-            ) {}
+            ) { route ->
+                onNavigate(route)
+            }
         }
         composable(route = Routes.ABOUT) {AboutScreen()}
-        composable(route = Routes.NOTE_LIST) {NoteListScreen()}
+        composable(route = Routes.NOTE_LIST) {NoteListScreen(){ route ->
+            onNavigate(route)
+        } }
         composable(route = Routes.SETTINGS) {SettingsScreen()}
     }
     
