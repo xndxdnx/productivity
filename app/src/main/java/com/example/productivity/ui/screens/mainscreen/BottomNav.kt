@@ -25,7 +25,8 @@ import com.example.productivity.ui.theme.GrayLight
 
 @Composable
 fun BottomNav (
-    navHostController: NavHostController
+    currentRoute : String?,
+    onNavigate: (String) -> Unit
 ) {
    
     val bottomItems = listOf(
@@ -40,15 +41,12 @@ fun BottomNav (
             .background(color = Color.White)
             .height(90.dp),
     ) {
-        bottomItems.forEach { bottomNavItem -> 
-            val navBackStackEntry by navHostController.currentBackStackEntryAsState()
-            
-            val currentRoute = navBackStackEntry?.destination?.route
+        bottomItems.forEach { bottomNavItem ->
 
             NavigationBarItem(
                 selected = currentRoute == bottomNavItem.route,
                 onClick = {
-                    navHostController.navigate(route = bottomNavItem.route)
+                    onNavigate(bottomNavItem.route)
                 },
                 icon = {
                     Icon(
