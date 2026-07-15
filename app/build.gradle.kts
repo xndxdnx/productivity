@@ -57,6 +57,9 @@ dependencies {
     // Datastore
     implementation(libs.androidx.datastore)
 
+    // Scaffold
+    implementation("androidx.compose.material:material:1.5.4")
+    // Constraint
     implementation(libs.androidx.constraintlayout.compose)
 
     implementation(libs.androidx.core.ktx)
