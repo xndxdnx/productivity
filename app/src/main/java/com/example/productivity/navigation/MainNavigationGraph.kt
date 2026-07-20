@@ -10,17 +10,21 @@ import com.example.productivity.ui.screens.newnotescreen.NewNoteScreen
 import com.example.productivity.utils.Routes
 
 @Composable
-fun MainNavigationGraph (
+fun MainNavigationGraph(
 
 ) {
     val navController = rememberNavController()
 
     NavHost(
-        navController =  navController,
+        navController = navController,
         startDestination = Routes.MAIN_SCREEN
-    ){
-        composable (Routes.MAIN_SCREEN) { MainScreen(navController) }
-        composable (Routes.ADD_ITEM + "/{listId}") { AddItemScreen ()  }
-        composable (Routes.NEW_NOTE + "/{noteId}") { NewNoteScreen () }
+    ) {
+        composable(Routes.MAIN_SCREEN) { MainScreen(navController) }
+        composable(Routes.ADD_ITEM + "/{listId}") { AddItemScreen() }
+        composable(Routes.NEW_NOTE + "/{noteId}") {
+            NewNoteScreen() {
+                navController.popBackStack()
+            }
+        }
     }
 }
