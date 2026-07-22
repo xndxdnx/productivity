@@ -1,5 +1,6 @@
 package com.example.productivity.ui.screens.additemscreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -61,7 +62,7 @@ fun AddItemScreen(
             }
         }
     }
-
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     Scaffold(
         snackbarHost = {
             SnackbarHost(
@@ -78,9 +79,9 @@ fun AddItemScreen(
     ) { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .systemBarsPadding()
-                .padding(paddingValues)
+                .fillMaxSize()
+              //  .padding(paddingValues)
         ) {
             Card(
                 modifier = Modifier

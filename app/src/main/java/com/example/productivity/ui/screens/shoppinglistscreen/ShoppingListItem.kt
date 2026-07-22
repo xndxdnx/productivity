@@ -60,7 +60,7 @@ fun ShoppingListItem (
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
-                .clickable { onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM + "${item.id}")) }
+                .clickable { onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM + "/${item.id}")) }
         ) {
             Column(
                 modifier = Modifier

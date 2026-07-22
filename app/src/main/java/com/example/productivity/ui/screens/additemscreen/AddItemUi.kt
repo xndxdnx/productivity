@@ -44,7 +44,8 @@ fun AddItemUi (
         ) {
             Text(
                 text = item.name,
-                fontSize = 12.sp,
+                fontSize = 16.sp,
+                color = Color.Black,
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .weight(1f)

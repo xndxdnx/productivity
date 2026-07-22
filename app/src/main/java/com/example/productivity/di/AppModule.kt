@@ -10,6 +10,7 @@ import com.example.productivity.data.repository.ShoppingListRepository
 import com.example.productivity.data.repository_impl.AddItemRepositoryImpl
 import com.example.productivity.data.repository_impl.NoteRepositoryImpl
 import com.example.productivity.data.repository_impl.ShoppingListRepositoryImpl
+import com.example.productivity.datastore.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +54,15 @@ object AppModule {
         database: MainDatabase
     ) : AddItemRepository {
         return AddItemRepositoryImpl(database.addItemDao)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideDatastoreManager(
+        app: Application
+    ): DataStoreManager{
+        return DataStoreManager(app)
     }
 
 
