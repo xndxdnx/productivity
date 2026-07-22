@@ -100,9 +100,12 @@ fun MainScreen (
             }
         }
 
+
         if (viewModel.showFloatingButton.value){
             FloatingActionButton(
-                onClick = {  },
+                onClick = {
+                    viewModel.onEvent(event = MainScreenEvent.OnNewItemClick(route = currentRoute ?: Routes.SHOPPING_LIST))
+                },
                 modifier = Modifier
                     .align(alignment = Alignment.BottomCenter)
                     .offset(y = (-60).dp)

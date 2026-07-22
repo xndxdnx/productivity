@@ -101,7 +101,6 @@ class AddItemViewModel @Inject constructor(
             is AddItemEvent.OnItemDelete -> {
                 viewModelScope.launch {
                     addItemRepository.deleteItem(event.item)
-
                 }
                 viewModelScope.launch {
                     updateShoppingListCount()
